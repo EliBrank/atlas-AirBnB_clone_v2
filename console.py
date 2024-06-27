@@ -114,17 +114,54 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class with optional parameters."""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        args_list = args.split()
+        if len(args_list) < 2:
+            print("** parameters missing **")
+            return
+        
+        class_name = args_list[0]
+
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        
+        params = {}
+
+        i = 1
+        while i < len(args_list):
+            key_value = args_list[i]
+            if '=' in key_value:
+                key_value_parts = key_value.split('=')
+                if len(key_value_parts) != 2:
+                    print(f"Invalid format for parameter: {key_value}")
+                    return
+
+                key = key_value_parts[0]
+                value_str = key_value_parts[1]
+                
+                # This if for string, float and int.
+                if value_str.startswith('"') and value_str.endswith('"'):
+                    value = value_str[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value_str:
+                    try:
+                        value = float(value_str)
+                    except ValueError:
+                        print(f"Invalid value for {key}: {value_str}")
+                        return
+                elif value_str.isdigit():
+                    value = int(value_str)
+                else:
+                    print(f"Skipping unrecognized format for {key}")
+                    return
+                
+                params[key] = value
+            
+            i += 1
 
     def help_create(self):
         """ Help information for the create method """
