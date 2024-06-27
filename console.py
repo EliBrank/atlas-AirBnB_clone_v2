@@ -113,18 +113,58 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """Create an object of any class with given parameters."""
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        
+        args_list = arg.split()
+        class_name = args_list[0]
+
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        
+        params = {}
+
+        # Parsing parameters
+        for param in args_list[1:]:
+            if '=' in param:
+                key, value_str = param.split('=', 1)
+                key = key.strip()
+                value_str = value_str.strip()
+
+                # Handling value types
+                if value_str.startswith('"') and value_str.endswith('"'):
+                    # String value
+                    value = value_str[1:-1].replace('\\"', '"').replace('_', ' ')
+                elif '.' in value_str:
+                    # Float value
+                    try:
+                        value = float(value_str)
+                    except ValueError:
+                        print(f"Skipping invalid float value: {value_str}")
+                        continue
+                elif value_str.isdigit():
+                    # Integer value
+                    value = int(value_str)
+                else:
+                    # Skip unrecognized parameter formats
+                    print(f"Skipping unrecognized format for {key}")
+                    continue
+                
+                # Assign parameter to params dictionary
+                params[key] = value
+            else:
+                print(f"Skipping unrecognized format for {param}")
+
+        # Create an instance of the class with the parsed parameters
+        new_instance = storage.classes()[class_name](**params)
+        new_instance.save()
+
+        # Print the id of the newly created instance
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
