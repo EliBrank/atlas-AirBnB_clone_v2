@@ -4,11 +4,11 @@ from enum import Enum
 from os import getenv
 
 
-class StorageType(Enum):
+class UsingStorage(Enum):
     """creates enum DB to check if using database storage"""
-    DB = getenv('HBNB_TYPE_STORAGE') == 'db'
+    DB_STORAGE = getenv('HBNB_TYPE_STORAGE') == 'db'
 
-if StorageType.DB:
+if UsingStorage.DB_STORAGE:
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
