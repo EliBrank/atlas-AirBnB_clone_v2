@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 import models
-from base_model import Base
+from models.base_model import Base
 
 
 class DBStorage:
@@ -35,16 +35,7 @@ class DBStorage:
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-        # create all tables in database
-        Base.metadata.create_all(self.__engine)
 
-        # create class for making sessions
-        session_build = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        # create new session (scoped)
-        self.__session = scoped_session(session_build)
-
-
-    # FIXME
     def all(self, cls=None):
         """query all objects of specified class
 
@@ -53,49 +44,60 @@ class DBStorage:
 
         from models import class_lookup
 
-        query_dict = {}
+        if self.__session is None:
+            self.reload()
 
         # first check that cls is not None
         if cls:
-            # convert cls to class from string
+            # convert cls to class from string (if needed)
             if type(cls) is str:
                 cls = class_lookup.get(cls, None)
-            for obj in self.__session.query(cls):
+            objects = self.__session.query(cls).all()
+            # dictionary comprehension formats dict as:
+            # <class_name>.<object_id> : object
+            query_dict = {
+                "{}.{}".format(cls.__name__, obj.id) : obj for obj in objects
+            }
+
+            return query_dict
 
         else:
-            #if cls is None, convert cls to list of all classes
-            cls = class_lookup.values()
+            # if cls is None, combine queries of all classes
+            query_dict = {}
+
+            for cls in class_lookup.values():
+                objects = self.__session.query(cls).all()
+
+                # update query_dict with new class objects
+                query_dict.update({
+                    "{}.{}".format(cls.__name__, obj.id): obj for obj in objects
+                })
+
+            return query_dict
 
 
     def new(self, obj):
         """adds specified object to current database session"""
-        # asdf
+        pass
 
     def save(self):
         """commit all changes of the current database session"""
-        # asdf
+        pass
 
     def delete(self, obj=None):
         """deletes obj from the current database session if not None"""
-        # asdf
+        pass
 
     def reload(self):
         """creates all tables in the database
 
         also creates current database session
         """
-        # asdf
+        # create all tables in database
+        Base.metadata.create_all(self.__engine)
 
+        # create class for making sessions
+        session_build = sessionmaker(bind=self.__engine, expire_on_commit=False)
 
-#     Base.metadata.create_all(bind=engine)
-#
-#     Session = sessionmaker(bind=engine)
-#
-#     with Session() as session:
-#         place = session.query(City, State).join(State).order_by(City.id).all()
-#         for city, state in place:
-#             print(f"{state.name}: ({city.id}) {city.name}")
-#
-#
-# if __name__ == "__main__":
-#     model_city_fetch_by_state()
+        # create new session (scoped)
+        self.__session = scoped_session(session_build)
