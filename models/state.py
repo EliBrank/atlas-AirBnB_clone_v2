@@ -11,7 +11,6 @@ class State(BaseModel, Base):
     if UsingStorage.DB_STORAGE:
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey('states_id'), nullable=False)
         cities = relationship(
             'City',
             # names reference (within city back to State object) as state
