@@ -9,6 +9,7 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid, models
 
+# used for formatting datetime elements with strptime
 time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 
 # checks storage engine (db_storage vs file_storage)
