@@ -3,6 +3,9 @@
 from models.base_model import BaseModel, Base
 import sqlalchemy
 import os
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 
 class Review(BaseModel):

@@ -3,6 +3,9 @@
 from models.base_model import BaseModel, Base
 import sqlalchemy
 import os
+from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 
 if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
