@@ -47,52 +47,84 @@ class DBStorage:
         if self.__session is None:
             self.reload()
 
-        # first check that cls is not None
+        if self.__session:
+            print(f"Session: {self.__session}")
+            print("Session was initialized")
+
+        objects = {}
+        if type(cls) == str:
+            cls = class_lookup.get(cls, None)
+            print(f"Converted cls from string: {cls}")
         if cls:
-            # convert cls to class from string (if needed)
-            if type(cls) is str:
-                cls = class_lookup.get(cls, None)
-            objects = self.__session.query(cls).all()
-            # dictionary comprehension formats dict as:
-            # <class_name>.<object_id> : object
-            query_dict = {
-                "{}.{}".format(cls.__name__, obj.id) : obj for obj in objects
-            }
-
-            return query_dict
-
+            print(f"Querying class: {cls}")
+            try:
+                for obj in self.__session.query(cls):
+                    print(f"Found object: {obj}")
+                    objects[obj.__class__.__name__ + '.' + obj.id] = obj
+            except Exception as e:
+                print(f"Error querying class {cls}: {e}")
         else:
-            # if cls is None, combine queries of all classes
-            query_dict = {}
+            for cls_name, cls in class_lookup.items():
+                print(f"Querying class: {cls}")
+                try:
+                    for obj in self.__session.query(cls):
+                        print(f"Found object: {obj}")
+                        objects[obj.__class__.__name__ + '.' + obj.id] = obj
+                except Exception as e:
+                    print(f"Error querying class {cls_name}: {e}")
+        return objects
 
-            for cls in class_lookup.values():
-                objects = self.__session.query(cls).all()
-
-                # update query_dict with new class objects
-                query_dict.update({
-                    "{}.{}".format(cls.__name__, obj.id): obj for obj in objects
-                })
-
-            return query_dict
+        # # first check that cls is not None
+        # if cls:
+        #     # convert cls to class from string (if needed)
+        #     if type(cls) is str:
+        #         cls = class_lookup.get(cls, None)
+        #     objects = self.__session.query(cls).all()
+        #     # dictionary comprehension formats dict as:
+        #     # <class_name>.<object_id> : object
+        #     query_dict = {
+        #         "{}.{}".format(cls.__name__, obj.id) : obj for obj in objects
+        #     }
+        #
+        #     return query_dict
+        #
+        # else:
+        #     # if cls is None, combine queries of all classes
+        #     query_dict = {}
+        #
+        #     for cls in class_lookup.values():
+        #         print(f"here's a class: ")
+        #         print(cls)
+        #         # objects = self.__session.query(cls).all()
+        #
+        #         # update query_dict with new class objects
+        #         # query_dict.update({
+        #         #     "{}.{}".format(cls.__name__, obj.id): obj for obj in objects
+        #         # })
+        #
+        #     return query_dict
 
 
     def new(self, obj):
         """adds specified object to current database session"""
-        pass
+        self.__session.add(obj)
 
     def save(self):
         """commit all changes of the current database session"""
-        pass
+        self.__session.commit()
 
     def delete(self, obj=None):
         """deletes obj from the current database session if not None"""
-        pass
+        self.__session.delete(obj)
 
     def reload(self):
         """creates all tables in the database
 
         also creates current database session
         """
+        print(Base)
+        if models.UsingStorage.DB_STORAGE:
+            print("We are still using db_storage")
         # create all tables in database
         Base.metadata.create_all(self.__engine)
 
@@ -101,3 +133,6 @@ class DBStorage:
 
         # create new session (scoped)
         self.__session = scoped_session(session_build)
+
+        if self.__session is None:
+            print("we messed up here")
