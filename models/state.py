@@ -13,10 +13,7 @@ class State(BaseModel, Base):
         name = Column(String(128), nullable=False)
         cities = relationship(
             'City',
-            # names reference (within city back to State object) as state
             backref='state',
-            # specifies behavior when the instance is deleted
-            # 'all' uses all cascade options (delete, delete-orphan, etc.)
             cascade='all'
         )
     else:

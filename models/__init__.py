@@ -22,7 +22,6 @@ from models.review import Review
 # this dictionary is used to convert between strings and classes
 # import using "from models import class_lookup"
 class_lookup = {
-    'BaseModel': BaseModel,
     'User': User,
     'Place': Place,
     'State': State,

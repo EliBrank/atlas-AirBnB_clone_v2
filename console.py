@@ -140,11 +140,14 @@ class HBNBCommand(cmd.Cmd):
             # key/value pairs split and saved into arg_toks list
             arg_toks = arg.split("=")
 
-            # Unquote, underscore to space
-            if len(args_list) != 2:
-                continue
+            print(f"arg_toks is currently: {arg_toks}")
+            print(f"args_list is currently: {args_list}")
+
+            # if len(args_list) != 2:
+            #     continue
             key, value = arg_toks[0], arg_toks[1]
 
+            # Unquote, underscore to space
             # convert values to appropriate data types
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1].replace('_', ' ')
@@ -160,7 +163,7 @@ class HBNBCommand(cmd.Cmd):
             attributes[key] = value
 
         new_instance = HBNBCommand.classes[class_name](**attributes)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -242,12 +245,11 @@ class HBNBCommand(cmd.Cmd):
         # assign to class_name variable
         class_name = args.split()[0] if ' ' in args else args
 
-        # get all class instances stored in __objects and put in obj_dict
-        obj_dict = storage.all()
-
         # if no class name is specified, add all obj instances to list
         # add dictionary of objs to list as string representations
         if class_name == "":
+            # gets all objs from all classes from storage
+            obj_dict = storage.all()
             for key in obj_dict:
                 print_list.append(str(obj_dict[key]))
             for item in print_list:
@@ -261,6 +263,7 @@ class HBNBCommand(cmd.Cmd):
 
         # here on assumes valid class name was passed
         # only adds objs from specified class
+        obj_dict = storage.all(HBNBCommand.classes[class_name])
         for key, value in obj_dict.items():
             if class_name in key:
                 print_list.append(str(value))

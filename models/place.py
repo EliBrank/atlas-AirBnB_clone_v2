@@ -2,10 +2,8 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 import models
-import sqlalchemy
 from os import getenv
 from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
@@ -30,7 +28,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 # Cascade update the foreign key when the row is updated
 # or deleted.
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':

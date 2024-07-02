@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 """ User Module for HBNB project """
 from models.base_model import BaseModel, Base
-import sqlalchemy
 from os import getenv
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user"""
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'users'
