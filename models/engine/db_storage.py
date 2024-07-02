@@ -13,7 +13,7 @@ class DBStorage:
     """manages hbnb models in MySQL database"""
 
     __engine = None
-    __session = None
+    __session: scoped_session = None
 
     def __init__(self):
         """initializes the storage database"""
