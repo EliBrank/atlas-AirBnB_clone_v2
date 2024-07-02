@@ -140,9 +140,6 @@ class HBNBCommand(cmd.Cmd):
             # key/value pairs split and saved into arg_toks list
             arg_toks = arg.split("=")
 
-            print(f"arg_toks is currently: {arg_toks}")
-            print(f"args_list is currently: {args_list}")
-
             # if len(args_list) != 2:
             #     continue
             key, value = arg_toks[0], arg_toks[1]
