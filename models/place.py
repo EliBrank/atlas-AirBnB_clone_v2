@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models import UsingStorage
 from models.base_model import BaseModel, Base
 import models
 import sqlalchemy
-import os
+from os import getenv
 from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
-if UsingStorage.DB_STORAGE:
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id',
@@ -34,7 +33,7 @@ if UsingStorage.DB_STORAGE:
 class Place(BaseModel):
     """ A place to stay """
 
-    if UsingStorage.DB_STORAGE:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)

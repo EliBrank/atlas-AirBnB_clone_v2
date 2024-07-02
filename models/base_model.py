@@ -4,16 +4,16 @@ Contains class BaseModel
 """
 
 from datetime import datetime
-from models import UsingStorage
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid, models
+from os import getenv
 
 # used for formatting datetime elements with strptime
 time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 
 # checks storage engine (db_storage vs file_storage)
-if UsingStorage.DB_STORAGE:
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     print("We are using db_storage")
     Base = declarative_base()
 else:
@@ -24,7 +24,7 @@ else:
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
 
-    if UsingStorage.DB_STORAGE:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         id = Column(String(60), primary_key=True)
         created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)

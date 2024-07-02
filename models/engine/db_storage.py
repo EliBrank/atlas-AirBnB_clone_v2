@@ -52,6 +52,7 @@ class DBStorage:
             print("Session was initialized")
 
         objects = {}
+
         if type(cls) == str:
             cls = class_lookup.get(cls, None)
             print(f"Converted cls from string: {cls}")
@@ -123,7 +124,7 @@ class DBStorage:
         also creates current database session
         """
         print(Base)
-        if models.UsingStorage.DB_STORAGE:
+        if getenv('HBNB_TYPE_STORAGE') == 'db':
             print("We are still using db_storage")
         # create all tables in database
         Base.metadata.create_all(self.__engine)
