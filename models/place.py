@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from models import UsingStorage
 from models.base_model import BaseModel, Base
 import sqlalchemy
 import os
@@ -8,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
-if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+if UsingStorage.DB_STORAGE:
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id',
@@ -32,7 +33,7 @@ if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
 class Place(BaseModel):
     """ A place to stay """
 
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+    if UsingStorage.DB_STORAGE:
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
