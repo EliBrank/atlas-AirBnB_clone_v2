@@ -2,6 +2,7 @@
 """ Place Module for HBNB project """
 from models import UsingStorage
 from models.base_model import BaseModel, Base
+import models
 import sqlalchemy
 import os
 from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
