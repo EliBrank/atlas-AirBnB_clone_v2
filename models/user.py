@@ -2,16 +2,15 @@
 """ User Module for HBNB project """
 from models.base_model import BaseModel, Base
 import sqlalchemy
-import os
+from os import getenv
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from models import UsingStorage
 
 
 class User(BaseModel):
     """This class defines a user"""
-    if UsingStorage.DB_STORAGE:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)

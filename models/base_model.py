@@ -4,7 +4,6 @@ Contains class BaseModel
 """
 
 from datetime import datetime
-from models import UsingStorage
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid, models
@@ -25,7 +24,7 @@ else:
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
 
-    if UsingStorage.DB_STORAGE:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         id = Column(String(60), primary_key=True)
         created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)

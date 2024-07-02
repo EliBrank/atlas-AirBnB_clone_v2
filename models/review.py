@@ -2,16 +2,15 @@
 """ Review module for the HBNB project """
 from models.base_model import BaseModel, Base
 import sqlalchemy
-import os
+from os import getenv
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from models import UsingStorage
 
 
 class Review(BaseModel):
     """ Review class to store review information """
-    if UsingStorage.DB_STORAGE:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'reviews'
         place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
