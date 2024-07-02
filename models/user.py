@@ -6,6 +6,7 @@ import os
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from models import UsingStorage
 
 
 class User(BaseModel):
