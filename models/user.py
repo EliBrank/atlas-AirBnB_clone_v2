@@ -11,7 +11,7 @@ from models import UsingStorage
 
 class User(BaseModel):
     """This class defines a user"""
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+    if UsingStorage.DB_STORAGE:
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
