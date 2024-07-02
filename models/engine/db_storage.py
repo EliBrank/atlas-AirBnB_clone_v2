@@ -123,9 +123,6 @@ class DBStorage:
 
         also creates current database session
         """
-        print(Base)
-        if getenv('HBNB_TYPE_STORAGE') == 'db':
-            print("We are still using db_storage")
         # create all tables in database
         Base.metadata.create_all(self.__engine)
 
@@ -134,6 +131,3 @@ class DBStorage:
 
         # create new session (scoped)
         self.__session = scoped_session(session_build)
-
-        if self.__session is None:
-            print("we messed up here")

@@ -14,10 +14,8 @@ time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 
 # checks storage engine (db_storage vs file_storage)
 if getenv('HBNB_TYPE_STORAGE') == 'db':
-    print("We are using db_storage")
     Base = declarative_base()
 else:
-    print("We are using file_storage")
     Base = object
 
 
