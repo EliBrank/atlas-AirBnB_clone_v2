@@ -342,14 +342,15 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # cast attr_val to appropriate data type
+        if attr_val.startswith('"') and attr_val.endswith('"'):
+            attr_val = attr_val[1:-1].replace('_', ' ')
         try:
-            # checks if attr_val is a float (if it has decimal point)
-            if "." in attr_val:
-                attr_val = float(attr_val)
-            else:
-                attr_val = int(attr_val)
+            attr_val = float(attr_val)
         except ValueError:
-            # attr_val stays a string in this case
+            pass
+        try:
+            attr_val = int(attr_val)
+        except ValueError:
             pass
 
         setattr(instance, attr_name, attr_val)
