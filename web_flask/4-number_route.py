@@ -37,7 +37,7 @@ def n_var(n):
         n = int(n)
         return "{} is a number".format(n)
     else:
-        abort(400, description="n must be a number")
+        abort(404)
 
 
 if __name__ == "__main__":
