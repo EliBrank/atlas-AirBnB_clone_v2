@@ -33,11 +33,7 @@ def python_var(text="is_cool"):
 
 @app.route("/number/<int:n>")
 def number(n):
-    if n.isdigit():
-        n = int(n)
-        return "{} is a number".format(n)
-    else:
-        abort(404)
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":

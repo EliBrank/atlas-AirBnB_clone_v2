@@ -33,20 +33,12 @@ def python_var(text="is_cool"):
 
 @app.route("/number/<int:n>")
 def number(n):
-    if n.isdigit():
-        n = int(n)
-        return "{} is a number".format(n)
-    else:
-        abort(404)
+    return "{} is a number".format(n)
 
 
 @app.route("/number_template/<int:n>")
 def number_template(n):
-    if n.isdigit():
-        n = int(n)
-        return render_template("5-number.html", num=n)
-    else:
-        abort(404)
+    return render_template("5-number.html", num=n)
 
 
 if __name__ == "__main__":
