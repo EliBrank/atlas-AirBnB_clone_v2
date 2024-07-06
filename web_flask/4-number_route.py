@@ -31,8 +31,8 @@ def python_var(text="is_cool"):
     return "Python {}".format(text)
 
 
-@app.route("/number/<n>")
-def n_var(n):
+@app.route("/number/<int:n>")
+def number(n):
     if n.isdigit():
         n = int(n)
         return "{} is a number".format(n)
