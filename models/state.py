@@ -30,7 +30,7 @@ class State(BaseModel, Base):
             city_list = []
             all_cities = storage.all(City)
             for city in all_cities.values():
-                # check each city's state_id against those connected to State object
+                # check each city's state_id against those connected to State
                 if city.state_id == self.id:
                     city_list.append(city)
 
