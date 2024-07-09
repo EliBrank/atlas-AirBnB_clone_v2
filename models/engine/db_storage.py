@@ -40,7 +40,6 @@ class DBStorage:
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-
     def all(self, cls=None):
         """query all objects of specified class
 
@@ -63,7 +62,8 @@ class DBStorage:
             # dictionary comprehension formats dict as:
             # <class_name>.<object_id> : object
             query_dict = {
-                "{}.{}".format(cls.__name__, obj.id) : obj for obj in objects
+                "{}.{}".format(cls.__name__, obj.id): obj for
+                obj in objects
             }
 
             return query_dict
@@ -77,11 +77,11 @@ class DBStorage:
 
                 # update query_dict with new class objects
                 query_dict.update({
-                    "{}.{}".format(cls.__name__, obj.id): obj for obj in objects
+                    "{}.{}".format(cls.__name__, obj.id): obj
+                    for obj in objects
                 })
 
             return query_dict
-
 
     def new(self, obj):
         """adds specified object to current database session"""
@@ -104,7 +104,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
 
         # create class for making sessions
-        session_build = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_build = sessionmaker(bind=self.__engine,
+                                     expire_on_commit=False)
 
         # create new session (scoped)
         self.__session = scoped_session(session_build)
