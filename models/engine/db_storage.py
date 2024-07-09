@@ -5,14 +5,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from models.base_model import Base
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+from models import User, Place, State, City, Amenity, Review
+from models.base_model import Base, BaseModel
 
 
 class DBStorage:
@@ -109,3 +103,7 @@ class DBStorage:
 
         # create new session (scoped)
         self.__session = scoped_session(session_build)
+
+    def close(self):
+        """closes current session"""
+        self.__session.remove()
