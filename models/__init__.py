@@ -11,27 +11,20 @@ else:
 
 storage.reload()
 
-
-def get_class_lookup():
-    """defines dictionary of classes with string counterparts"""
-
-    from models.user import User
-    from models.place import Place
-    from models.state import State
-    from models.city import City
-    from models.amenity import Amenity
-    from models.review import Review
-
-    return {
-        'User': User,
-        'Place': Place,
-        'State': State,
-        'City': City,
-        'Amenity': Amenity,
-        'Review': Review
-    }
-
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 # this dictionary is used to convert between strings and classes
 # import using "from models import class_lookup"
-class_lookup = get_class_lookup()
+class_lookup = {
+    'User': User,
+    'Place': Place,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Review': Review
+}
