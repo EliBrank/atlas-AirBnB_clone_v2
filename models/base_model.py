@@ -23,9 +23,10 @@ class BaseModel:
     """The BaseModel class from which future classes will be derived"""
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+        id = Column(String(60), primary_key=True,
+                    default=lambda: str(uuid.uuid4()))
+        created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+        updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
@@ -67,25 +68,6 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
-        # """returns a dictionary containing all keys/values of the instance"""
-        # new_dict = self.__dict__.copy()
-        # if "created_at" in new_dict:
-        #     new_dict["created_at"] = new_dict["created_at"].isoformat()
-        # if "updated_at" in new_dict:
-        #     new_dict["updated_at"] = new_dict["updated_at"].isoformat()
-        # if '_password' in new_dict:
-        #     new_dict['password'] = new_dict['_password']
-        #     new_dict.pop('_password', None)
-        # if 'amenities' in new_dict:
-        #     new_dict.pop('amenities', None)
-        # if 'reviews' in new_dict:
-        #     new_dict.pop('reviews', None)
-        # if 'sa_instance_state' in new_dict:
-        # new_dict["__class__"] = self.__class__.__name__
-        # new_dict.pop('_sa_instance_state', None)
-        # if not save_to_disk:
-        #     new_dict.pop('password', None)
-        # return new_dict
 
     def delete(self):
         """Deletes current instance from storage"""

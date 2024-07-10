@@ -16,8 +16,12 @@ def close_db(exception=None):
 
 @app.route("/hbnb_filters")
 def hbnb_filters():
+    states_values = list(storage.all(State).values())
+    amenity_values = list(storage.all(Amenity).values())
     return render_template(
-        "10-hbnb_filters.html"
+        "10-hbnb_filters.html",
+        states_values=states_values,
+        amenity_values=amenity_values
     )
 
 
