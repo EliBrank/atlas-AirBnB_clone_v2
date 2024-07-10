@@ -18,20 +18,20 @@ def close_db(exception=None):
 def states():
     states_values = storage.all(State).values()
     return render_template(
-        '7-states_list.html', states_values=states_values
+        "7-states_list.html", states_values=states_values
     )
 
 
-@app.route('/states/<id>', strict_slashes=False)
+@app.route("/states/<id>")
 def states_by_id(id):
 
-    states = storage.all(State)  # This returns a dictionary
+    states = storage.all(State)
     state = states.get(f"State.{id}")
 
     if state:
-        return render_template('9-states.html', state=state)
+        return render_template("9-states.html", state=state)
     else:
-        return render_template('9-states.html')
+        return render_template("9-states.html")
 
 
 if __name__ == "__main__":
